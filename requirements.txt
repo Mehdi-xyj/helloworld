@@ -1,6 +1,5 @@
-streamlit_extras.metric_cards
-streamlit_extras.stylable_container
-plotly.graph_objects
-plotly.subplots
+streamlit
+streamlit-extras
+plotly
 pandas
-ziko_st_toc
+ziko-st-toc
