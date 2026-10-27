@@ -116,5 +116,67 @@ st.warning("""
 式（4-2）中 $$m_{qu}$$ 为麦曲对糯米的质量百分比，分母 12 为标定基准。酶活与麦曲量取线性关系，适用于 8%–20% 的常规区间。
 """)
 
+st.markdown("##### 4.2 糖化动力学")
+st.markdown(
+    r"""
+    **还原糖生成与消耗速率：**
+    
+    $$
+    \frac{\mathrm{d}S}{\mathrm{d}t} = k_{\mathrm{hyd}} \cdot A \cdot f_T \cdot \frac{C}{1 + S/K_{\mathrm{inh}}} - q_s \cdot X \tag{4-3}
+    $$
+    
+    **比消耗速率 $q_s$ 的动力学表达式：**
+    
+    $$
+    q_s = q_{s,\mathrm{max}} \cdot \frac{S}{K_s + S} \cdot \frac{K_i}{K_i + E} \cdot f_T(T) \tag{4-4}
+    $$
+    """
+)
+st.warning("""
+**说明**
+        
+比消耗速率 $$q_{s}$$ 采用 Monod 型底物项与乙醇非竞争抑制项相乘。该形式使发酵后期在糖充足时仍因乙醇累积而降速，符合黄酒高酒精度发酵的实际特征。
+""")
+
+st.markdown("##### 4.3 温度影响因子")
+st.markdown(
+    r"""
+    $$
+    f_T(T) = \exp\left[ \frac{E_a}{R} \left( \frac{1}{303.15} - \frac{1}{T + 273.15} \right) \right] \cdot \frac{1}{1 + \exp\left((T - 33.5)/1.2\right)} \tag{4-5}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'前项为 Arrhenius 温度依赖（$$E_{a}$$/R = 5,774 K，以 30 ℃ 为参考点归一），后项为高温失活函数。二者相乘后，'        
+'温度在 24–32 ℃ 区间呈单调递增，超过 34 ℃ 迅速衰减，用于表征高温导致的酵母早衰。该结构使模型对温度具有'
+'实际的区分能力，而非简单的经验插值。'
+)
+
+st.markdown("##### 4.4 酵母生长与死亡")
+st.markdown(
+    r"""
+    **酵母生物量生长速率：**
+    
+    $$
+    \frac{\mathrm{d}X}{\mathrm{d}t} = \mu \cdot X - k_{\mathrm{d}}(E) \cdot X \tag{4-6}
+    $$
+    
+    **比生长速率 $\mu$ 的表达式：**
+    
+    $$
+    \mu = \mu_{\mathrm{max}} \cdot \frac{S}{K_s + S} \cdot \frac{K_i}{K_i + E} \cdot f_T \cdot \left( 1 - \frac{X}{X_{\mathrm{max}}} \right) \tag{4-7}
+    $$
+    
+    **乙醇抑制导致的比死亡速率 $k_{\mathrm{d}}(E)$：**
+    
+    $$
+    k_{\mathrm{d}}(E) = k_{\mathrm{d}0} \left[ 1 + \left( \frac{E}{85} \right)^3 \right] \tag{4-8}
+    $$
+    """
+)
+
 
 
