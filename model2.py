@@ -177,6 +177,214 @@ st.markdown(
     $$
     """
 )
+st.warning("""
+**说明**
+
+"""
+'式（4-7）末项为 Logistic 型空间/营养限制；式（4-8）为乙醇致死项，当 E 接近 85 g/L 后死亡速率快速'        
+'上升，用于刻画发酵末期的菌体衰亡与自溶，这也是后发酵阶段风味物质生成的前提。'
+)
+
+st.markdown("##### 4.5 乙醇生成")
+st.markdown(
+    r"""
+    **乙醇生成速率：**
+    
+    $$
+    \frac{\mathrm{d}E}{\mathrm{d}t} = Y_{p/s} \cdot q_s \cdot X + m_p \cdot X \tag{4-9}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'$$Y_{p/s}$$ 为乙醇对糖的产率系数，取值 0.45 g/g，低于理论值 0.511 g/g，差额对应酵母生长消耗与甘油、有机酸等'        
+'副产物。$$m_{p}$$ 为维持代谢产醇项。'
+)
+
+st.markdown("##### 4.6 产酸动力学")
+st.markdown(
+    r"""
+    **总酸生成速率：**
+    
+    $$
+    \frac{\mathrm{d}L}{\mathrm{d}t} = Y_{l/s} \cdot q_s \cdot X \cdot \exp\left[ - \left( \frac{E}{70} \right)^2 \right] \cdot \big(1 + 0.55 \cdot \max(0, T - 32)\big) \tag{4-10}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'产酸主要来自前发酵期乳酸菌活动，随乙醇累积被抑制'        
+'（高斯衰减项）。温度超过 32 ℃ 时产酸系数放大，用于表'
+'征高温酸败风险，这也是模型中"峰值品温"作为控制指标的依据。'
+)
+
+st.markdown("##### 4.7 能量平衡")
+st.markdown(
+    r"""
+    **品温变化速率（能量平衡）：**
+    
+    $$
+    \frac{\mathrm{d}T}{\mathrm{d}t} = \frac{T_{\mathrm{set}}(t) - T}{\tau} + h \cdot \frac{\mathrm{d}E}{\mathrm{d}t} \tag{4-11}
+    $$
+    
+    **设定温度 $T_{\mathrm{set}}(t)$ 的分段函数定义：**
+    
+    $$
+    T_{\mathrm{set}}(t) = 
+    \begin{cases} 
+    T_{\mathrm{fer}}, & t < t_{\mathrm{fer}} \\
+    T_{\mathrm{age}}, & t \ge t_{\mathrm{fer}} 
+    \end{cases} \tag{4-12}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'式（4-11）为控温响应与发酵放热的叠加。第一项为设'        
+'定温度的一阶滞后跟随（τ = 0.45 d，对应实际开耙与夹套'
+'征换热的综合响应时间），第二项为发酵放热导致的温度抬升。'
+'该结构使模型能够重现"设定 29 ℃ 而实际峰值达 31–33'
+'℃"的真实现象，从而支撑开耙频次与控温策略的推演。'
+)
+
+st.markdown("##### 4.8 初始条件与糖当量")
+st.markdown(
+    r"""
+    **初始淀粉糖当量 $C_0$ 的折算：**
+    
+    $$
+    C_0 = C_{\mathrm{ref}} \cdot \frac{w_{\mathrm{st}}}{0.78} \cdot \frac{\eta}{0.96} \cdot \frac{1}{1 + r} \tag{4-13}
+    $$
+    """
+)
+st.markdown(
+    r"""
+    $$
+    \begin{aligned}
+    C(0) &= C_0, \quad S(0) = 20, \quad X(0) = 6 \cdot k_{\mathrm{y}}, \\
+    E(0) &= 0, \quad L(0) = 1.2, \quad T(0) = T_0
+    \end{aligned}
+    \tag{4-14}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'$$C_{ref}$$ = 660 g/L 为标定基准值（对应淀粉 78%、糊化'        
+'度 96%、米水比 1:1.2）。分母项 (1+r) 体现加水稀释，'
+'征换热的综合响应时间），第二项为发酵放热导致的温度抬升。'
+'该结构使模型能够重现"设定 29 ℃ 而实际峰值达 31–33'
+'℃"的真实现象，从而支撑开耙频次与控温策略的推演。'
+)
+
+st.subheader('5. 工序段经验模型')
+st.markdown(
+    '除发酵外，其余工序的物料传递机理复杂（含传热、传质、机械分离），采用机理建模的成本与收益不匹配，'
+    '故采用基于质量守恒与经验系数的代数模型。所有经验系数均标注物理含义与取值范围，以便标定。',
+    unsafe_allow_html=True,
+)
+
+st.markdown("##### 5.1 浸米与蒸饭")
+st.markdown(
+    r"""
+    $$
+    m_1 = R(1 + \alpha) - 0.003R \tag{5-1}
+    $$
+    
+    $$
+    m_2 = 0.997 m_1 \tag{5-2}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'α 为浸米吸水率（基准 0.30，范围 0.24–0.38），'        
+'0.003 为浸米过程的碎米与可溶物损失；0.997 为蒸饭过程'
+'的蒸发与散失系数。浸米环节不改变可发酵糖总量，仅影响物'
+'料体积与后续蒸煮负荷。'
+)
+
+st.markdown("##### 5.2 落缸配料")
+st.markdown(
+    r"""
+    $$
+    m_3 = 0.995 m_2 + R \cdot r + R \cdot q/100 \tag{5-3}
+    $$
+    
+    $$
+    V_{\mathrm{m}} = m_3 / 1.06 \tag{5-4}
+    $$
+    """
+)
+
+st.markdown("##### 5.3 发酵后质量变化")
+st.markdown(
+    r"""
+    $$
+    \begin{aligned}
+    m_{\mathrm{E}} &= E \cdot V_{\mathrm{m}} / 1000, \quad m_{\mathrm{CO_2}} = 0.957 \cdot m_{\mathrm{E}}, \\
+    m_{\mathrm{f}} &= m_3 - m_{\mathrm{CO_2}}
+    \end{aligned}
+    \tag{5-5}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'0.957 为乙醇发酵的化学计量比 88/92（2 分子乙醇'        
+'对应 2 分子 CO₂，摩尔质量比 46:44）。逸出的 CO₂ 是发酵'
+'过程最主要的物料损失，基准工况下占投入的 11.5%。'
+)
+
+st.markdown("##### 5.4 压榨与出糟")
+st.markdown(
+    r"""
+    **酒糟质量 $m_{\mathrm{lees}}$ 的计算：**
+    
+    $$
+    \begin{aligned}
+    m_{\mathrm{lees}} &= R [ 0.28 + 2.0(1 - \eta) ] \cdot \frac{0.85}{\varphi} \cdot [ 1 + \\
+    &\quad 0.0018 \cdot \max(0, S - 30) ]
+    \end{aligned}
+    \tag{5-6}
+    $$
+    
+    **酒液质量 $m_{\mathrm{w}}$ 与体积 $V_{\mathrm{w}}$ 的换算：**
+    
+    $$
+    m_{\mathrm{w}} = m_{\mathrm{f}} - m_{\mathrm{lees}}, \quad V_{\mathrm{w}} = m_{\mathrm{w}} / 1.02 \tag{5-7}
+    $$
+    """
+)
+st.warning("""
+**说明**
+
+"""
+'式（5-6）三项分别表征：基础出糟率（28% 米重）、'        
+'糊化不足导致的未糖化淀粉残留（糊化度每降 10 个百分点，'
+'出糟率增加 20 个百分点）、残糖偏高导致的糟中可溶物增'
+'加。φ 为压榨效率，与出糟率成反比。'
+)
+
+
+
+
+
+
+
+
 
 
 
